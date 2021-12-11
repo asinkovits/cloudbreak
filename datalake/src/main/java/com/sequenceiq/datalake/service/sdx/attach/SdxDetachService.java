@@ -47,7 +47,6 @@ public class SdxDetachService {
         sdxStatusService.setStatusForDatalakeAndNotify(DatalakeStatusEnum.STOPPED, "Datalake detach in progress.", sdxID);
 
         SdxCluster cluster = sdxService.getById(sdxID);
-
         String originalName = cluster.getClusterName();
         sdxAttachDetachUtils.updateClusterNameAndCrn(
                 cluster, sdxDetachNameGenerator.generateDetachedClusterName(originalName),
@@ -69,7 +68,7 @@ public class SdxDetachService {
      */
     public void detachStack(SdxCluster cluster, String originalName) throws Exception {
         LOGGER.info("Started detaching stack of SDX cluster with ID: {}.", cluster.getId());
-        sdxAttachDetachUtils.updateStack(cluster, originalName);
+        sdxAttachDetachUtils.updateStack(originalName, cluster.getClusterName(), cluster.getCrn());
         LOGGER.info("Finished detaching stack of SDX cluster with ID: {}.", cluster.getId());
     }
 

@@ -74,6 +74,11 @@ public class SdxClusterStatusCheckerJob extends StatusCheckerJob {
 
     private void syncSdxStatus(JobExecutionContext context) {
         getCluster().ifPresent(sdx -> {
+            if (!getRemoteResourceCrn().equals(sdx.getStackCrn())) {
+                // During processes such as resize the DL's stack CRN is modified, this ensures that it's updated in this job.
+                setRemoteResourceCrn(sdx.getStackCrn());
+            }
+
             StackStatusV4Response stack = cloudbreakInternalCrnClient.withInternalCrn().autoscaleEndpoint().getStatusByCrn(getRemoteResourceCrn());
             updateCertExpirationStateIfDifferent(sdx, stack);
             SdxStatusEntity sdxStatus = sdxStatusService.getActualStatusForSdx(sdx);

@@ -49,7 +49,7 @@ public class SdxAttachService {
         try {
             reattachStack(reattached, detachedName);
             if (clusterToReattach.hasExternalDatabase()) {
-                reattachExternalDatabase(reattached, detachedCrn);
+                reattachExternalDatabase(reattached, detachedCrn, detachedName);
             }
             return reattached;
         } catch (Exception e) {
@@ -92,7 +92,7 @@ public class SdxAttachService {
      */
     public void reattachStack(SdxCluster cluster, String originalName) {
         LOGGER.info("Started reattaching stack of SDX cluster with ID: {}", cluster.getId());
-        sdxAttachDetachUtils.updateStack(cluster, originalName);
+        sdxAttachDetachUtils.updateStack(originalName, cluster.getClusterName(), cluster.getCrn());
         LOGGER.info("Finished reattaching stack of SDX cluster with ID: {}. Now has name {} and crn {}.",
                 cluster.getId(), cluster.getClusterName(), cluster.getCrn());
     }
@@ -100,11 +100,18 @@ public class SdxAttachService {
     /**
      * Throws a NotFoundException if the database is not found for the cluster CRN and environment CRN.
      */
-    private void reattachExternalDatabase(SdxCluster cluster, String detachedCrn) {
+    private void reattachExternalDatabase(SdxCluster cluster, String detachedCrn, String detachedName) {
         LOGGER.info("Started reattaching external database for SDX cluster with ID: {}", cluster.getId());
-        sdxAttachDetachUtils.updateExternalDatabase(cluster, detachedCrn);
-        LOGGER.info("Finished reattaching external database for SDX cluster with ID: {}. Now has crn: {}.",
-                cluster.getId(), cluster.getCrn());
+
+        try {
+            sdxAttachDetachUtils.updateExternalDatabase(cluster, detachedCrn);
+            LOGGER.info("Finished reattaching external database for SDX cluster with ID: {}. Now has crn: {}.",
+                    cluster.getId(), cluster.getCrn());
+        } catch (RuntimeException e) {
+            // Undo the stack update to put everything back in its original state.
+            sdxAttachDetachUtils.updateStack(cluster.getClusterName(), detachedName, detachedCrn);
+            throw e;
+        }
     }
 
     /**

@@ -24,7 +24,6 @@ import com.sequenceiq.datalake.service.sdx.status.SdxStatusService;
 import com.sequenceiq.redbeams.api.endpoint.v4.databaseserver.DatabaseServerV4Endpoint;
 import com.sequenceiq.sdx.api.model.SdxDatabaseAvailabilityType;
 
-@SuppressWarnings("unchecked")
 public class SdxAttachServiceTest {
     private static final String TEST_CLUSTER_ENV_CRN = "envCrn";
 
