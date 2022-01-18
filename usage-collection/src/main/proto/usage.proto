@@ -174,6 +174,10 @@ message Event {
     CDPDiagnosticEvent cdpDiagnosticEvent = 82;
     // A CDP stack patcher event fired.
     CDPStackPatchEvent cdpStackPatchEvent = 83;
+    // A CDP Data lake operation is requested.
+    CDPDatalakeBackupRestoreRequested cdpDatalakeBackupRestoreRequested = 84;
+    // A CDP Data lake operation is completed.
+    CDPDatalakeBackupRestoreComplete cdpDatalakeBackupRestoreComplete = 85;
   }
 }
 
@@ -377,6 +381,22 @@ message CDPCloudProviderVariantType {
     YARN = 5;
     // Mock
     MOCK = 6;
+    // AWS_GOV Deprecated/Renamed fields
+    AWS_GOV = 7;
+    // AWS_NATIVE_GOV
+    AWS_NATIVE_GOV = 8;
+  }
+}
+
+// The status of a CDP Cloudbreak cluster.
+message DatalakeBackupRestoreStatus {
+  enum Value {
+    // A value indicating the enum is unset.
+    UNSET = 0;
+    // Successful result for a backup/restore operation.
+    SUCCESSFUL = 1;
+    // Failed result for a backup/restore operation.
+    FAILED = 2;
   }
 }
 
@@ -505,6 +525,78 @@ message CDPDatahubClusterStatusChanged {
   string failureReason = 4;
 }
 
+// Generated when a valid CDP Datalake operation performed
+message CDPDatalakeBackupRestoreRequested {
+  // The CDP account ID of the Datalake cluster.
+  string accountId = 1;
+  // The user-supplied Datalake name.
+  string datalakeName = 2;
+  // The environment type.
+  CDPEnvironmentsEnvironmentType.Value environmentType = 3;
+  // The shape of the datalake.
+  CDPDatalakeShapeType.Value shape = 4;
+  // The CRN of the Datalake cluster's environment.
+  string environmentCrn = 5;
+  // The CDP distribution version of the Datalake cluster.
+  string cdpdVersion = 6;
+  // The CRN for the Datalake cluster. This could be clusterId for now.
+  string crn = 7;
+  // The CRN of the user performing the operation.
+  string userCrn = 8;
+  // Operation type
+  CDPDatalakeOperationType.Value operationType = 9;
+}
+
+// Generated when a valid CDP Datalake operation status changed.
+message CDPDatalakeBackupRestoreComplete {
+  // The CDP account ID of the Datalake cluster.
+  string accountId = 1;
+  // The user-supplied Datalake name.
+  string datalakeName = 2;
+  // The environment type.
+  CDPEnvironmentsEnvironmentType.Value environmentType = 3;
+  // The shape of the datalake.
+  CDPDatalakeShapeType.Value shape = 4;
+  // The CRN of the Datalake cluster's environment.
+  string environmentCrn = 5;
+  // The CDP distribution version of the Datalake cluster.
+  string cdpdVersion = 6;
+  // The CRN for the Datalake cluster. This could be clusterId for now.
+  string crn = 7;
+  // The CRN of the user performing the operation.
+  string userCrn = 8;
+  // The duration of the operation.
+  int32 totalDuration = 9;
+  // The duration taken to perform operation on the audit events table.
+  int32 atlasAuditsEventsDuration = 10;
+  // The duration taken to perform operation on the atlasJanus table.
+  int32 atlasJanusDuration = 11;
+  // The duration taken to perform operation on the vertexIndexCollection collection.
+  int32 vertexIndexCollectionDuration = 12;
+  // The duration taken to perform operation on the edgeIndexCollection collection.
+  int32 edgeIndexCollectionDuration = 13;
+  // The duration taken to perform operation on the fulltextxIndexCollection collection.
+  int32 fulltextxIndexCollectionDuration = 14;
+  // The duration taken to perform operation on the rangerAuditsCollection collection.
+  int32 rangerAuditsCollectionDuration = 15;
+  // The duration taken to perform deletion on the vertexIndexCollection collection.
+  int32 vertexIndexCollectionDeleteDuration = 16;
+  // The duration taken to perform deletion on the edgeIndexCollection collection.
+  int32 edgeIndexCollectionDeleteDuration = 17;
+  // The duration taken to perform deletion on the fulltextxIndexCollection collection.
+  int32 fulltextxIndexCollectionDeleteDuration = 18;
+  // The duration taken to perform deletion on the rangerAuditsCollection collection.
+  int32 rangerAuditsCollectionDeleteDuration = 19;
+  // The duration taken to perform operation on the postgress database
+  int32 databaseDuration = 20;
+  // Operation type
+  CDPDatalakeOperationType.Value operationType = 21;
+  // The status of the operation
+  DatalakeBackupRestoreStatus.Value status = 22;
+  // A failure message for the Datalake cluster. This will only be set if status is
+  // *_FAILED.
+  string failureReason = 23;
+}
 
 // The status of a CDP Cloudbreak workspace.
 message CDPCMLWorkspaceStatus {
@@ -1193,7 +1285,7 @@ message CDPEnvironmentGcpDetails {
 
 // AWS specific environment details
 message CDPEnvironmentAwsDetails {
-  // True if user provides encryption key Arn to encrypt AWS EBS volumes with CMK
+  // True if user provides encryption key ARN to encrypt AWS EBS volumes with CMEK
   bool resourceEncryptionEnabled = 1;
 }
 
@@ -1290,6 +1382,34 @@ message CDPClusterShape {
   bool temporaryStorageUsed = 5;
   // Cluster template details in JSON format
   string clusterTemplateDetails = 6;
+}
+
+// The Shape of the Data lake.
+message CDPDatalakeShapeType {
+  enum Value {
+    // A value indicating the enum is unset.
+    UNSET = 0;
+    // LIGHT DUTY
+    LIGHT_DUTY = 1;
+    // MEDIUM DUTY.
+    MEDIUM_DUTY_HA = 2;
+    // MICRO DUTY.
+    MICRO_DUTY = 3;
+    // CUSTOM
+    CUSTOM = 4;
+  }
+}
+
+// The type the operation.
+message CDPDatalakeOperationType {
+  enum Value {
+    // A value indicating the enum is unset.
+    UNSET = 0;
+    // Backup Operation
+    BACKUP = 1;
+    // Restore Operation
+    RESTORE = 2;
+  }
 }
 
 message CDPVersionDetails {

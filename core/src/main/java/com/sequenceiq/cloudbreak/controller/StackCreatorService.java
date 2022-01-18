@@ -474,6 +474,7 @@ public class StackCreatorService {
                             workspace.getId(),
                             stackRequest.getImage(),
                             platformString,
+                            stackRequest.getVariant(),
                             blueprint,
                             shouldUseBaseCMImage,
                             baseImageEnabled,
