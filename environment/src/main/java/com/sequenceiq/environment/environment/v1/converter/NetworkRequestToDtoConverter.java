@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.base.Strings;
 import com.sequenceiq.cloudbreak.cloud.model.CloudSubnet;
+import com.sequenceiq.common.api.type.LoadBalancerStatus;
 import com.sequenceiq.common.api.type.OutboundInternetTraffic;
 import com.sequenceiq.common.api.type.PublicEndpointAccessGateway;
 import com.sequenceiq.common.api.type.ServiceEndpointCreation;
@@ -102,6 +103,7 @@ public class NetworkRequestToDtoConverter {
                 .withServiceEndpointCreation(getServiceEndpointCreation(network))
                 .withOutboundInternetTraffic(getOutboundInternetTraffic(network))
                 .withUsePublicEndpointAccessGateway(getUsePublicEndpointAccessGateway(network))
+                .withLoadBalancerStatus(getLoadBalancerStatus(network))
                 .build();
     }
 
@@ -123,5 +125,9 @@ public class NetworkRequestToDtoConverter {
 
     private PublicEndpointAccessGateway getUsePublicEndpointAccessGateway(EnvironmentNetworkRequest network) {
         return Optional.ofNullable(network.getPublicEndpointAccessGateway()).orElse(PublicEndpointAccessGateway.DISABLED);
+    }
+
+    private LoadBalancerStatus getLoadBalancerStatus(EnvironmentNetworkRequest network) {
+        return Optional.ofNullable(network.getLoadBalancerStatus()).orElse(LoadBalancerStatus.ENABLED);
     }
 }

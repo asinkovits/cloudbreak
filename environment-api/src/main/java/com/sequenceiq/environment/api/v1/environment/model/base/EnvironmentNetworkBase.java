@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sequenceiq.cloudbreak.validation.SubnetType;
 import com.sequenceiq.cloudbreak.validation.ValidSubnet;
+import com.sequenceiq.common.api.type.LoadBalancerStatus;
 import com.sequenceiq.common.api.type.OutboundInternetTraffic;
 import com.sequenceiq.common.api.type.PublicEndpointAccessGateway;
 import com.sequenceiq.common.api.type.ServiceEndpointCreation;
@@ -67,6 +68,9 @@ public abstract class EnvironmentNetworkBase implements Serializable {
 
     @ApiModelProperty(EnvironmentModelDescription.GCP_SPECIFIC_PARAMETERS)
     private EnvironmentNetworkGcpParams gcp;
+
+    @ApiModelProperty(EnvironmentModelDescription.LOADBALANCER_STATUS)
+    private LoadBalancerStatus loadBalancerStatus = LoadBalancerStatus.ENABLED;
 
     public Set<String> getSubnetIds() {
         return subnetIds;
@@ -156,6 +160,14 @@ public abstract class EnvironmentNetworkBase implements Serializable {
         this.mock = mock;
     }
 
+    public LoadBalancerStatus getLoadBalancerStatus() {
+        return loadBalancerStatus;
+    }
+
+    public void setLoadBalancerStatus(LoadBalancerStatus loadBalancerStatus) {
+        this.loadBalancerStatus = loadBalancerStatus;
+    }
+
     @Override
     public String toString() {
         return "EnvironmentNetworkBase{" +
@@ -171,6 +183,7 @@ public abstract class EnvironmentNetworkBase implements Serializable {
                 ", azure=" + azure +
                 ", yarn=" + yarn +
                 ", mock=" + mock +
+                ", loadBalancerStatus=" + loadBalancerStatus +
                 '}';
 
     }

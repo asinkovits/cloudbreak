@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.sequenceiq.cloudbreak.cloud.model.CloudSubnet;
+import com.sequenceiq.common.api.type.LoadBalancerStatus;
 import com.sequenceiq.common.api.type.OutboundInternetTraffic;
 import com.sequenceiq.common.api.type.PublicEndpointAccessGateway;
 import com.sequenceiq.environment.api.doc.ModelDescriptions;
@@ -227,6 +228,8 @@ public class EnvironmentNetworkResponse extends EnvironmentNetworkBase {
 
         private Set<String> endpointGatewaySubnetIds;
 
+        private LoadBalancerStatus loadBalancerStatus;
+
         private Builder() {
         }
 
@@ -350,6 +353,11 @@ public class EnvironmentNetworkResponse extends EnvironmentNetworkBase {
             return this;
         }
 
+        public Builder withLoadBalancerStatus(LoadBalancerStatus loadBalancerStatus) {
+            this.loadBalancerStatus = loadBalancerStatus;
+            return this;
+        }
+
         public EnvironmentNetworkResponse build() {
             EnvironmentNetworkResponse environmentNetworkResponse = new EnvironmentNetworkResponse();
             environmentNetworkResponse.setCrn(crn);
@@ -376,6 +384,7 @@ public class EnvironmentNetworkResponse extends EnvironmentNetworkBase {
             environmentNetworkResponse.setGatewayEndpointSubnetMetas(endpointGatewaySubnetMetas);
             environmentNetworkResponse.setEndpointGatewaySubnetIds(endpointGatewaySubnetIds);
             environmentNetworkResponse.setPreferedSubnetIds(preferedSubnetIds);
+            environmentNetworkResponse.setLoadBalancerStatus(loadBalancerStatus);
             return environmentNetworkResponse;
         }
     }

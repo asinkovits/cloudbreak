@@ -50,6 +50,7 @@ public class NetworkDtoToResponseConverter {
                 .withUsePublicEndpointAccessGateway(network.getPublicEndpointAccessGateway())
                 .withEndpointGatewaySubnetMetas(network.getEndpointGatewaySubnetMetas())
                 .withEndpointGatewaySubnetIds(network.getEndpointGatewaySubnetIds())
+                .withLoadBalancerStatus(network.getLoadBalancerStatus())
                 .withAws(getIfNotNull(network.getAws(), p -> EnvironmentNetworkAwsParams.EnvironmentNetworkAwsParamsBuilder
                         .anEnvironmentNetworkAwsParams()
                         .withVpcId(p.getVpcId())
