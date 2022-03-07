@@ -16,6 +16,7 @@ import com.sequenceiq.cloudbreak.cloud.model.CloudVmTypes;
 import com.sequenceiq.cloudbreak.cloud.model.ExtendedCloudCredential;
 import com.sequenceiq.cloudbreak.cloud.model.Region;
 import com.sequenceiq.cloudbreak.cloud.model.database.CloudDatabaseServerSslCertificates;
+import com.sequenceiq.cloudbreak.cloud.model.dns.CloudPrivateDnsZones;
 import com.sequenceiq.cloudbreak.cloud.model.nosql.CloudNoSqlTables;
 import com.sequenceiq.cloudbreak.cloud.model.resourcegroup.CloudResourceGroups;
 
@@ -129,6 +130,8 @@ public interface PlatformResources {
     CloudNoSqlTables noSqlTables(ExtendedCloudCredential cloudCredential, Region region, Map<String, String> filters);
 
     CloudResourceGroups resourceGroups(ExtendedCloudCredential cloudCredential, Region region, Map<String, String> filters);
+
+    CloudPrivateDnsZones privateDnsZones(ExtendedCloudCredential cloudCredential, Region region, Map<String, String> filters);
 
     default boolean regionMatch(Region actualRegion, Region expectedRegion) {
         return expectedRegion == null || Strings.isNullOrEmpty(expectedRegion.value()) || actualRegion.value().equals(expectedRegion.value());

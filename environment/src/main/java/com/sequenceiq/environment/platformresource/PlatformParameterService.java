@@ -29,6 +29,7 @@ import com.sequenceiq.cloudbreak.cloud.model.CloudSshKeys;
 import com.sequenceiq.cloudbreak.cloud.model.CloudVmTypes;
 import com.sequenceiq.cloudbreak.cloud.model.Platform;
 import com.sequenceiq.cloudbreak.cloud.model.PlatformDisks;
+import com.sequenceiq.cloudbreak.cloud.model.dns.CloudPrivateDnsZones;
 import com.sequenceiq.cloudbreak.cloud.model.nosql.CloudNoSqlTables;
 import com.sequenceiq.cloudbreak.cloud.model.resourcegroup.CloudResourceGroups;
 import com.sequenceiq.cloudbreak.cloud.service.CloudParameterService;
@@ -326,6 +327,11 @@ public class PlatformParameterService {
 
     public CloudResourceGroups getResourceGroups(PlatformResourceRequest request) {
         return cloudParameterService.getResourceGroups(extendedCloudCredentialConverter.convert(request.getCredential()), request.getRegion(),
+                request.getPlatformVariant(), request.getFilters());
+    }
+
+    public CloudPrivateDnsZones getPrivateDnsZones(PlatformResourceRequest request) {
+        return cloudParameterService.getPrivateDnsZones(extendedCloudCredentialConverter.convert(request.getCredential()), request.getRegion(),
                 request.getPlatformVariant(), request.getFilters());
     }
 
