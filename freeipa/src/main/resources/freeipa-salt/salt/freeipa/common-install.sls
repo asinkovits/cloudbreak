@@ -127,3 +127,21 @@ disable-anonymous-ldap-access:
     - require:
         - file: /opt/salt/scripts/disable_anon_ldap.sh
     - unless: test -f /var/log/freeipa_ldap_anon-executed
+
+/opt/salt/scripts/increase_ldap_size_limit.sh:
+  file.managed:
+    - makedirs: True
+    - user: root
+    - group: root
+    - mode: 700
+    - source: salt://freeipa/scripts/increase_ldap_size_limit.sh
+
+increase-ldap-ize-limit:
+  cmd.run:
+    - name: /opt/salt/scripts/increase_ldap_size_limit.sh && echo $(date +%Y-%m-%d:%H:%M:%S) >> /var/log/increase_ldap_size_limit-executed
+    - env:
+        - FPW: {{salt['pillar.get']('freeipa:password')}}
+    - failhard: True
+    - require:
+        - file: /opt/salt/scripts/increase_ldap_size_limit.sh
+    - unless: test -f /var/log/increase_ldap_size_limit-executed
